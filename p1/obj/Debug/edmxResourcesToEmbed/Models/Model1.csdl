@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ProjectDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="ProjectDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Roles" EntityType="ProjectDBModel.Role" />
+    <EntitySet Name="Vendor_Master" EntityType="ProjectDBModel.Vendor_Master" />
+    <EntitySet Name="Purchases" EntityType="ProjectDBModel.Purchase" />
+    <AssociationSet Name="FK_Purchase_Vendor_Master" Association="ProjectDBModel.FK_Purchase_Vendor_Master">
+      <End Role="Vendor_Master" EntitySet="Vendor_Master" />
+      <End Role="Purchase" EntitySet="Purchases" />
+    </AssociationSet>
+    <EntitySet Name="Purchase_Detail" EntityType="ProjectDBModel.Purchase_Detail" />
+    <EntitySet Name="Login_Master" EntityType="ProjectDBModel.Login_Master" />
+    <AssociationSet Name="FK_Login_Master_Roles" Association="ProjectDBModel.FK_Login_Master_Roles">
+      <End Role="Role" EntitySet="Roles" />
+      <End Role="Login_Master" EntitySet="Login_Master" />
+    </AssociationSet>
+    <EntitySet Name="Item_Master" EntityType="ProjectDBModel.Item_Master" />
+    <AssociationSet Name="FK_Table_1_Item_Master" Association="ProjectDBModel.FK_Table_1_Item_Master">
+      <End Role="Item_Master" EntitySet="Item_Master" />
+      <End Role="Purchase_Detail" EntitySet="Purchase_Detail" />
+    </AssociationSet>
+    <EntitySet Name="Inventories" EntityType="ProjectDBModel.Inventory" />
+    <AssociationSet Name="FK_Inventory_Item_Master" Association="ProjectDBModel.FK_Inventory_Item_Master">
+      <End Role="Item_Master" EntitySet="Item_Master" />
+      <End Role="Inventory" EntitySet="Inventories" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="role_id" />
+    </Key>
+    <Property Name="role_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="role_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Login_Master" Relationship="ProjectDBModel.FK_Login_Master_Roles" FromRole="Role" ToRole="Login_Master" />
+  </EntityType>
+  <EntityType Name="Vendor_Master">
+    <Key>
+      <PropertyRef Name="vendor_code" />
+    </Key>
+    <Property Name="vendor_code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="vendor_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="vendor_contactno" Type="Int64" Nullable="false" />
+    <Property Name="vendor_address" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="vendor_state" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="vendor_GSTno" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Purchases" Relationship="ProjectDBModel.FK_Purchase_Vendor_Master" FromRole="Vendor_Master" ToRole="Purchase" />
+  </EntityType>
+  <EntityType Name="Purchase">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="purchase_no" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="invoice_no" Type="Int64" />
+    <Property Name="vendor_no" Type="Int32" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="invoice_date" Type="DateTime" Precision="0" />
+    <Property Name="order_date" Type="DateTime" Precision="0" />
+    <Property Name="status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="tax" Type="Int64" />
+    <NavigationProperty Name="Vendor_Master" Relationship="ProjectDBModel.FK_Purchase_Vendor_Master" FromRole="Purchase" ToRole="Vendor_Master" />
+  </EntityType>
+  <Association Name="FK_Purchase_Vendor_Master">
+    <End Type="ProjectDBModel.Vendor_Master" Role="Vendor_Master" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="ProjectDBModel.Purchase" Role="Purchase" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vendor_Master">
+        <PropertyRef Name="vendor_code" />
+      </Principal>
+      <Dependent Role="Purchase">
+        <PropertyRef Name="vendor_no" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Purchase_Detail">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="purchase_no" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="item_code" Type="Int32" Nullable="false" />
+    <Property Name="item_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="qty" Type="Int32" Nullable="false" />
+    <Property Name="item_rate" Type="Int64" Nullable="false" />
+    <Property Name="amount" Type="Int64" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="Item_Master" Relationship="ProjectDBModel.FK_Table_1_Item_Master" FromRole="Purchase_Detail" ToRole="Item_Master" />
+  </EntityType>
+  <EntityType Name="Login_Master">
+    <Key>
+      <PropertyRef Name="login_id" />
+    </Key>
+    <Property Name="login_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="role_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Role" Relationship="ProjectDBModel.FK_Login_Master_Roles" FromRole="Login_Master" ToRole="Role" />
+  </EntityType>
+  <Association Name="FK_Login_Master_Roles">
+    <End Type="ProjectDBModel.Role" Role="Role" Multiplicity="1" />
+    <End Type="ProjectDBModel.Login_Master" Role="Login_Master" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Role">
+        <PropertyRef Name="role_id" />
+      </Principal>
+      <Dependent Role="Login_Master">
+        <PropertyRef Name="role_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Item_Master">
+    <Key>
+      <PropertyRef Name="item_code" />
+    </Key>
+    <Property Name="item_code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="item_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="item_unit" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="item_rate" Type="Int64" Nullable="false" />
+    <NavigationProperty Name="Purchase_Detail" Relationship="ProjectDBModel.FK_Table_1_Item_Master" FromRole="Item_Master" ToRole="Purchase_Detail" />
+    <NavigationProperty Name="Inventory" Relationship="ProjectDBModel.FK_Inventory_Item_Master" FromRole="Item_Master" ToRole="Inventory" />
+  </EntityType>
+  <Association Name="FK_Table_1_Item_Master">
+    <End Type="ProjectDBModel.Item_Master" Role="Item_Master" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="ProjectDBModel.Purchase_Detail" Role="Purchase_Detail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Item_Master">
+        <PropertyRef Name="item_code" />
+      </Principal>
+      <Dependent Role="Purchase_Detail">
+        <PropertyRef Name="item_code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Inventory">
+    <Key>
+      <PropertyRef Name="item_code" />
+    </Key>
+    <Property Name="item_code" Type="Int32" Nullable="false" />
+    <Property Name="min_qty" Type="Int32" Nullable="false" />
+    <Property Name="current_qty" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Item_Master" Relationship="ProjectDBModel.FK_Inventory_Item_Master" FromRole="Inventory" ToRole="Item_Master" />
+  </EntityType>
+  <Association Name="FK_Inventory_Item_Master">
+    <End Type="ProjectDBModel.Item_Master" Role="Item_Master" Multiplicity="1" />
+    <End Type="ProjectDBModel.Inventory" Role="Inventory" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Item_Master">
+        <PropertyRef Name="item_code" />
+      </Principal>
+      <Dependent Role="Inventory">
+        <PropertyRef Name="item_code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

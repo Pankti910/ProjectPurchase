@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cc48c8fb746448d294fccca27752e40b" Name="Diagram1">
+        <EntityTypeShape EntityType="ProjectDBModel.Role" Width="1.5" PointX="0.625" PointY="0.625" />
+        <EntityTypeShape EntityType="ProjectDBModel.Vendor_Master" Width="1.5" PointX="1.25" PointY="9.125" />
+        <EntityTypeShape EntityType="ProjectDBModel.Purchase" Width="1.5" PointX="3.5" PointY="8.875" />
+        <AssociationConnector Association="ProjectDBModel.FK_Purchase_Vendor_Master" />
+        <EntityTypeShape EntityType="ProjectDBModel.Purchase_Detail" Width="1.5" PointX="5.125" PointY="4.625" />
+        <EntityTypeShape EntityType="ProjectDBModel.Login_Master" Width="1.5" PointX="3.5" PointY="0.75" />
+        <AssociationConnector Association="ProjectDBModel.FK_Login_Master_Roles" />
+        <EntityTypeShape EntityType="ProjectDBModel.Item_Master" Width="1.5" PointX="7.625" PointY="7.875" />
+        <AssociationConnector Association="ProjectDBModel.FK_Table_1_Item_Master" />
+        <EntityTypeShape EntityType="ProjectDBModel.Inventory" Width="1.5" PointX="9.875" PointY="8.125" />
+        <AssociationConnector Association="ProjectDBModel.FK_Inventory_Item_Master" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

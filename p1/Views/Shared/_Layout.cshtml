@@ -1,0 +1,262 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase</title>
+
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        .outer {
+            display: table;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        .middle {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .inner {
+            margin-left: auto;
+            margin-right: auto;
+            width: 400px;
+            /*whatever width you want*/
+        }
+
+        body, .content-wrapper {
+            padding-top: 0px !important;
+            background-color: #e6f2ff !important;
+        }
+
+        .nav-pills .nav-link {
+            color: #c2c7d0 !important;
+        }
+    </style>
+
+    <link href="~/Content/DataTables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Content/DataTables/css/buttons.bootstrap4.min.css" rel="stylesheet" />
+
+
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="~/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="~/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="~/plugins/summernote/summernote-bs4.min.css">
+
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+   \
+    <div class="wrapper">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+
+            <a href="https://www.gatisofttech.com/" class="brand-link">
+
+                <span class="brand-text font-weight-light">Gati</span>
+            </a>
+
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                    with font-awesome or any other icon font library -->
+                    @if (TempData["role"].ToString() != "Chef")
+                    {
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-money-check"></i>
+                                <p>
+                                    Purchase
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+
+                                @if (TempData["role"].ToString() == "Accountant")
+                                {
+
+
+                                    <li class="nav-item">
+                                        <a href="@Url.Action("Index", "Purchase")" class="nav-link">
+                                            <i class="fas fa-cart-plus"></i>
+                                            <p>Entry</p>
+
+                                        </a>
+                                    </li>
+                                }
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "ShowPurchase")" class="nav-link">
+                                        <i class="fas fa-list-alt"></i>
+                                        <p>Show(New)</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Approved", "ShowPurchase")" class="nav-link">
+
+                                        <i class="fa fa-check-circle"></i>
+                                        <p>Show(Approved)</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    @if (TempData["role"].ToString() == "Manager")
+                    {
+                        <li class="nav-item" style="color: #c2c7d0!important;">
+                            <a href="@Url.Action("Index", "Vendor")" class="nav-link">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>
+                                    Vendors
+                                </p>
+                            </a>
+                        </li>
+                    }
+                    @if (TempData["role"].ToString() == "Manager" || TempData["role"].ToString() == "Chef")
+                    {
+                        <li class="nav-item">
+                            <a href="@Url.Action("Index", "Item")" class="nav-link">
+                                <i class="nav-icon fas fa-shopping-bag"></i>
+                                <p>
+                                    Item
+                                </p>
+                            </a>
+                        </li>
+                    }
+
+                    @if (TempData["role"].ToString() != "Chef")
+                    {
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-list-alt"></i>
+                                <p>
+                                    Reoprts
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "Report")" class="nav-link">
+                                        <i class="fas fa-cart-plus"></i>
+                                        <p>Vendor Tax</p>
+
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("ItemsReport", "Report")" class="nav-link">
+                                        <i class="fas fa-cart-plus"></i>
+                                        <p>Item Report</p>
+
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("StatusReport", "Report")" class="nav-link">
+                                        <i class="fas fa-battery-half"></i>
+                                        <p>Status Report</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+                    }
+                    <li class="nav-item" style="color: #c2c7d0!important;">
+                        <a href="@Url.Action("LogOut", "Account")" class="nav-link">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <p>
+                                Log Out
+                            </p>
+                        </a>
+                    </li>
+
+
+
+                </ul>
+            </nav>
+
+        </aside>
+
+
+        <div class="content-wrapper" style="width:80%!important;margin-left:280px!important;">
+
+            @RenderBody()
+
+
+
+
+        </div>
+    </div>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @RenderSection("scripts", required: false)
+
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="~/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ChartJS -->
+    <script src="~/plugins/chart.js/Chart.min.js"></script>
+    <!-- Sparkline -->
+    <script src="~/plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="~/plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="~/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="~/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="~/plugins/moment/moment.min.js"></script>
+    <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="~/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Summernote -->
+    <script src="~/plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/dist/js/adminlte.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/dist/js/demo.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="~/dist/js/pages/dashboard.js"></script>
+
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/DataTables/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.bootstrap4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.colVis.min.js"></script>
+
+</body>
+</html>

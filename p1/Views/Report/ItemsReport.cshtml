@@ -1,0 +1,216 @@
+﻿@model p1.ReportsModel.ItemBase
+@{
+    ViewBag.Title = "ItemsReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+
+<script src="~/Scripts/Entry.js" type="text/javascript"></script>
+
+@using (Html.BeginForm())
+{
+
+    <div class="form-horizontal">
+        @{ Html.EnableClientValidation(false); }
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="card card-cyan">
+            <div class="card card-header"><h3 class="card-title">Item Report</h3></div>
+            <div class="card-body">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-4">
+                            <div class="form-group">
+                                Item
+                                @Html.DropDownListFor(model => model.itemCode,
+                               new SelectList(Model.items, "Value", "Text"), "Select Item", htmlAttributes: new { @class = "form-control" })
+
+                            </div>
+
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                Start Date
+                                @Html.EditorFor(model => model.startDate, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                End Date
+                                @Html.EditorFor(model => model.endtDate, new { htmlAttributes = new { @class = "form-control" } })
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+                <table id="reportTbl" class="table table-bordered" style="width:100%">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>
+                                Purchase No
+                            </th>
+                            <th>
+                                Order date
+                            </th>
+                            <th>
+                                Rate
+                            </th>
+                            <th>
+                                Qty
+                            </th>
+                            <th>
+                                Total
+                            </th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <th>
+
+                        </th>
+                        <th>
+
+                        </th>
+                        <th>
+
+                        </th>
+                        <th></th>
+                        <th></th>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        var itemCode='';
+        var startDate='';
+        var endDate='';
+
+        $("#itemCode").on('change', function () {
+            itemCode = $("#itemCode").val();
+          
+            if ($("#itemCode").val() != '') {
+                tabeleFill(itemCode, startDate,endDate);
+              
+            }
+        });
+        $("#startDate").change(function () {
+            var dates = $(this).val();
+            startDate = dates;
+            tabeleFill(itemCode, startDate, endDate);
+        });
+
+        $("#endtDate").change(function () {
+            var dates = $(this).val();
+            endDate = dates;
+            tabeleFill(itemCode, startDate, endDate);
+        });
+
+
+    });
+
+
+
+
+    function tabeleFill(itemCode,startDate,endDate) {
+        $("#reportTbl").dataTable({
+
+
+
+            
+            "paging": false,   
+            "searching": false,
+            "ajax": {
+                "type": 'GET',
+                "url": '/Report/GetDataItem?itemCode=' + itemCode + '&startDate=' + startDate + '&endDate=' + endDate,
+                "contentType": 'application / json; charset=utf - 8',
+                "dataType": 'json',
+            },
+            "bDestroy": true,
+            "columns": [
+                { 'data': 'purchase_no' },
+               {
+                    'data': 'order_date',
+                    'render': function (jsonDate) {
+                        var date = new Date(parseInt(jsonDate.substr(6)));
+                        var month = ("0" + (date.getMonth() + 1)).slice(-2);
+                        return (date.getFullYear() + '-' + month + '-' + ("0" + date.getDate()).slice(-2));
+                    }
+                },
+                { 'data': 'item_rate' },
+                { 'data': 'qty' },
+                { 'data':'amount'}
+            ],
+
+
+            "dom": 'Bfrtip',
+            "buttons": [
+                {
+                    
+                    extend: 'copy',
+                    footer:true,
+                    className: 'btn btn-info rounded-0',
+                    text: '<i class="far fa-copy"></i> Copy'
+                },
+                {
+                    extend: 'excel',
+                    footer: true,
+                    className: 'btn btn-info rounded-0',
+                    filename: 'ItemReport-' + Date.now(),
+                    text: '<i class="far fa-file-excel"></i> Excel'
+                },
+                {
+                    extend: 'pdf',
+                    footer: true,
+                    className: 'btn btn-info rounded-0',
+                    filename: 'ItemReport-' + Date.now(),
+                    text: '<i class="far fa-file-pdf"></i> Pdf'
+                },
+                {
+                    extend: 'csv',
+                    footer: true,
+                    className: 'btn btn-info rounded-0',
+                    filename: 'PurchaseTaxReport-' + Date.now(),
+
+                    text: '<i class="fas fa-file-csv"></i> CSV'
+                },
+                {
+                    extend: 'print',
+                    footer: true,
+                    className: 'btn btn-info rounded-0',
+                    text: '<i class="fas fa-print"></i> Print'
+                }
+            ],
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api(), data;
+                //// converting to interger to find total
+                var intVal = function (i) {
+                    return typeof i == 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i == 'number' ? i : 0;
+                };
+                var total = api.column(4).data().reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+                $(api.column(3).footer()).html('Total');
+                $(api.column(4).footer()).html(total);
+
+            }
+
+        });
+
+    }
+</script>

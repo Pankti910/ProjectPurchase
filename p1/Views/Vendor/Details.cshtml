@@ -1,0 +1,62 @@
+﻿@model p1.Models.Vendor_Master
+
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+  
+}
+<div class="card card-cyan">
+    <div class="card card-header"><h3 class="card-title">Items</h3></div>
+    <div class="card-body">
+
+        <div>
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.vendor_name)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.vendor_name)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.vendor_contactno)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.vendor_contactno)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.vendor_address)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.vendor_address)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.vendor_state)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.vendor_state)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.vendor_GSTno)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.vendor_GSTno)
+                </dd>
+
+            </dl>
+        </div>
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.vendor_code }, new { @class = "btn btn-sucess" }) |
+            @Html.ActionLink("Back to List", "Index", new { @class = "btn btn-info" })
+        </p>
+    </div>
+</div>

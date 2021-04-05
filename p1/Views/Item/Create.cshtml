@@ -1,0 +1,152 @@
+﻿@model p1.Repositories.InventoryRepo
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<div class="card card-cyan">
+    <div class="card card-header"><h3 class="card-title">Items Add</h3></div>
+    <div class="card-body">
+        <div class="container">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <div class="row">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                Item Name
+                                @Html.EditorFor(model => model.item.item_name, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <span class="text-danger" id="item_name_error"></span>
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                Rate
+                                @Html.EditorFor(model => model.item.item_rate, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <span class="text-danger" id="item_rate_error"></span>
+
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                Unit
+                                @Html.EditorFor(model => model.item.item_unit, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <span class="text-danger" id="item_unit_error"></span>
+
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                Min Qty
+                                @Html.EditorFor(model => model.inventory.min_qty, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <span class="text-danger" id="item_min_qty_error"></span>
+
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                Current Qty
+                                @Html.EditorFor(model => model.inventory.current_qty, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <span class="text-danger" id="item_curr_qty_error"></span>
+
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="button" id="addItem" value="Add Item" class="btn btn-success" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            }
+        </div>
+
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#addItem").on('click', function () {
+       
+        $("#item_name_error").html("");
+        $("#item_rate_error").html("");
+        $("#item_unit_error").html("");
+        $("#item_min_qty_error").html("");
+        $("#item_curr_qty_error").html("");
+        var item_name = $("#item_item_name");
+        var item_rate = $("#item_item_rate");
+        var item_unit = $("#item_item_unit");
+        var item_min_qty = $("#inventory_min_qty");
+        var item_curr_qty = $("#inventory_current_qty");
+        var flag = 0;
+        if (item_name.val() == "") {
+            $("#item_name_error").html("Item name is required");
+            flag = 1;
+        }
+        if (item_rate.val() == "") {
+            $("#item_rate_error").html("Item rate is required");
+            flag = 1;
+        }
+        else {
+            var patt1 = /^[0-9]{1,}$/;
+            if (!patt1.test(item_rate.val())) {
+                $("#item_rate_error").html("Item rate is must be in digit");
+                flag = 1;
+            }
+        }
+        if (item_unit.val() == "") {
+            $("#item_unit_error").html("Item unit is required");
+            flag = 1;
+        }
+        if (item_min_qty.val()=="") {
+            $("#item_min_qty_error").html("Minimum Qty is required");
+            flag = 1;
+
+        }
+
+        else {
+            var patt1 = /^[0-9]{1,2}$/;
+            if (!patt1.test(item_min_qty.val())) {
+                $("#item_min_qty_error").html("Item minimum qty is must be in digit");
+                flag = 1;
+            }
+        }
+
+
+
+        if (item_curr_qty.val()=="") {
+            $("#item_curr_qty_error").html("Current Qty is required");
+            flag = 1;
+
+        }
+
+        else {
+            var patt1 = /^[0-9]{1,3}$/;
+            if (!patt1.test(item_curr_qty.val())) {
+                $("#item_curr_qty_error").html("Item current qty is must be in digit");
+                flag = 1;
+            }
+        }
+        if (flag == 0) {
+            $("#addItem").prop('type', 'submit');
+        }
+
+
+
+    });
+</script>

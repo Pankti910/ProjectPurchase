@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ProjectDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Inventory">
+    <Key>
+      <PropertyRef Name="item_code" />
+    </Key>
+    <Property Name="item_code" Type="int" Nullable="false" />
+    <Property Name="min_qty" Type="int" Nullable="false" />
+    <Property Name="current_qty" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Item_Master">
+    <Key>
+      <PropertyRef Name="item_code" />
+    </Key>
+    <Property Name="item_code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="item_name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="item_unit" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="item_rate" Type="bigint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Login_Master">
+    <Key>
+      <PropertyRef Name="login_id" />
+    </Key>
+    <Property Name="login_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="role_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Purchase">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="purchase_no" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="invoice_no" Type="bigint" />
+    <Property Name="vendor_no" Type="int" Nullable="false" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="invoice_date" Type="date" />
+    <Property Name="order_date" Type="date" />
+    <Property Name="status" Type="varchar" MaxLength="10" />
+    <Property Name="tax" Type="bigint" />
+  </EntityType>
+  <EntityType Name="Purchase_Detail">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="purchase_no" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="item_code" Type="int" Nullable="false" />
+    <Property Name="item_name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="qty" Type="int" Nullable="false" />
+    <Property Name="item_rate" Type="bigint" Nullable="false" />
+    <Property Name="amount" Type="bigint" Nullable="false" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="role_id" />
+    </Key>
+    <Property Name="role_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="role_name" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Vendor_Master">
+    <Key>
+      <PropertyRef Name="vendor_code" />
+    </Key>
+    <Property Name="vendor_code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="vendor_name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="vendor_contactno" Type="bigint" Nullable="false" />
+    <Property Name="vendor_address" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="vendor_state" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="vendor_GSTno" Type="varchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Inventory_Item_Master">
+    <End Role="Item_Master" Type="Self.Item_Master" Multiplicity="1" />
+    <End Role="Inventory" Type="Self.Inventory" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Item_Master">
+        <PropertyRef Name="item_code" />
+      </Principal>
+      <Dependent Role="Inventory">
+        <PropertyRef Name="item_code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Login_Master_Roles">
+    <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+    <End Role="Login_Master" Type="Self.Login_Master" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="role_id" />
+      </Principal>
+      <Dependent Role="Login_Master">
+        <PropertyRef Name="role_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <!--Errors Found During Generation:
+warning 6035: The relationship 'FK_Purchase_Detail_Purchase' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+        <Association Name="FK_Purchase_Detail_Purchase" />-->
+  <Association Name="FK_Purchase_Vendor_Master">
+    <End Role="Vendor_Master" Type="Self.Vendor_Master" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Purchase" Type="Self.Purchase" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vendor_Master">
+        <PropertyRef Name="vendor_code" />
+      </Principal>
+      <Dependent Role="Purchase">
+        <PropertyRef Name="vendor_no" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Table_1_Item_Master">
+    <End Role="Item_Master" Type="Self.Item_Master" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Purchase_Detail" Type="Self.Purchase_Detail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Item_Master">
+        <PropertyRef Name="item_code" />
+      </Principal>
+      <Dependent Role="Purchase_Detail">
+        <PropertyRef Name="item_code" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ProjectDBModelStoreContainer">
+    <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Item_Master" EntityType="Self.Item_Master" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Login_Master" EntityType="Self.Login_Master" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Purchase" EntityType="Self.Purchase" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Purchase_Detail" EntityType="Self.Purchase_Detail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Vendor_Master" EntityType="Self.Vendor_Master" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Inventory_Item_Master" Association="Self.FK_Inventory_Item_Master">
+      <End Role="Item_Master" EntitySet="Item_Master" />
+      <End Role="Inventory" EntitySet="Inventory" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Login_Master_Roles" Association="Self.FK_Login_Master_Roles">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="Login_Master" EntitySet="Login_Master" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Purchase_Vendor_Master" Association="Self.FK_Purchase_Vendor_Master">
+      <End Role="Vendor_Master" EntitySet="Vendor_Master" />
+      <End Role="Purchase" EntitySet="Purchase" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Table_1_Item_Master" Association="Self.FK_Table_1_Item_Master">
+      <End Role="Item_Master" EntitySet="Item_Master" />
+      <End Role="Purchase_Detail" EntitySet="Purchase_Detail" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

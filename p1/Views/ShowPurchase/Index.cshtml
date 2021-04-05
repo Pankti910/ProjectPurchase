@@ -1,0 +1,143 @@
+﻿@model IEnumerable<p1.Models.Purchase>
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+ 
+}
+<link href="~/Content/Custom.css" rel="stylesheet" />
+
+<link href="~/Content/header.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<div class="card card-cyan">
+    <div class="card card-header"><h3 class="card-title">New Purchase Order</h3></div>
+    <div class="card-body">
+
+        <table class="table">
+            <tr>
+                <th>
+                    Purchase No
+                </th>
+                <th>
+                    Order Date
+                </th>
+
+                <th>
+                    Vendor
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+
+                </th>
+
+            </tr>
+
+            @foreach (var item in Model)
+            {
+
+                if (item.status == "New")
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.purchase_no)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.order_date)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Vendor_Master.vendor_name)
+                        </td>
+
+                        <td>
+                            @{
+                                int data = item.id;
+                                var dataAll = "Purchase No:" + item.purchase_no + "<br>" + "Vendor:" + item.Vendor_Master.vendor_name;
+                            }
+                            <input type="submit" class="btn btn-info id" value="Approved" id="@data" onclick="getid('@data','@dataAll')" />
+                        </td>
+                        <td>
+                            @Html.ActionLink("Detail Of Order", "DetailsPurchase", new { purchase_no = item.purchase_no }, new { @class = "btn btn-info" })
+                        </td>
+                    </tr>
+                }
+            }
+
+        </table>
+        <div class="modal fade" id="ApprovedDetail" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Details Invoice</h5>
+
+                    </div>
+                    <input type="hidden" id="purchase_id" />
+                    <div class="modal-body" id="approve_data">
+                        <p id="purchaseData" style="font-weight:bold;">
+
+                        </p>
+                        <form>
+                            <div class="form-group">
+                                <label for="invoice-no" class="col-form-label">Invoice No</label>
+                                <input type="text" class="form-control" id="invoice-no" />
+                                <span class="text-danger" id="invcoie_no"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="invoice-date" class="col-form-label">Invoice Date</label>
+                                <input type="date" class="form-control" id="invoice-date" />
+                                <span class="text-danger" id="invcoie_date"></span>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tax" class="col-form-label">Tax</label>
+                                <input type="number" min="0" class="form-control" id="tax" />
+                                <span class="text-danger" id="tax"></span>
+
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="close_modal" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="change_status">Approve</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+    <script>
+    function getid(id, data) {
+        $("#purchaseData").html(data);
+        $("#purchase_id").val(id);
+        $("#ApprovedDetail").modal();
+
+    }
+    $(document).ready(function () {
+
+        $("#change_status").on('click', function () {
+            var dateData = $("#invoice-date").val();
+            var dataObject = {};
+            dataObject.id = $("#purchase_id").val();
+            dataObject.invoice_no = $("#invoice-no").val();
+            dataObject.invoice_date = dateData.toString();
+            dataObject.tax = $("#tax").val();
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Update","ShowPurchase")",
+                data: JSON.stringify(dataObject),
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+               
+                    location.reload();
+                }
+            });
+        });
+    });
+    </script>

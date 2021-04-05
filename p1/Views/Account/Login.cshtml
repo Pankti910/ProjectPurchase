@@ -1,0 +1,70 @@
+﻿@model p1.Models.Login_Master
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<div class="login-box">
+    <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+            <a href="" class="h1"><b>Purchase</b></a>
+        </div>
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+            <div class="card-body">
+                <p class="login-box-msg">Sign in</p>
+
+                <div class="input-group mb-3">
+                    @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="input-group mb-3">
+                    @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+
+                </div>
+                <div class="input-group mb-3">
+
+                    @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control",@type="password" } })
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="input-group mb-3">
+                    @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    }
+

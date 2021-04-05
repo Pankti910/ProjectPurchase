@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ProjectDBModelStoreContainer" CdmEntityContainer="ProjectDBEntities">
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="ProjectDBModel.Role">
+        <MappingFragment StoreEntitySet="Roles">
+          <ScalarProperty Name="role_name" ColumnName="role_name" />
+          <ScalarProperty Name="role_id" ColumnName="role_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Vendor_Master">
+      <EntityTypeMapping TypeName="ProjectDBModel.Vendor_Master">
+        <MappingFragment StoreEntitySet="Vendor_Master">
+          <ScalarProperty Name="vendor_GSTno" ColumnName="vendor_GSTno" />
+          <ScalarProperty Name="vendor_state" ColumnName="vendor_state" />
+          <ScalarProperty Name="vendor_address" ColumnName="vendor_address" />
+          <ScalarProperty Name="vendor_contactno" ColumnName="vendor_contactno" />
+          <ScalarProperty Name="vendor_name" ColumnName="vendor_name" />
+          <ScalarProperty Name="vendor_code" ColumnName="vendor_code" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Purchases">
+      <EntityTypeMapping TypeName="ProjectDBModel.Purchase">
+        <MappingFragment StoreEntitySet="Purchase">
+          <ScalarProperty Name="tax" ColumnName="tax" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="order_date" ColumnName="order_date" />
+          <ScalarProperty Name="invoice_date" ColumnName="invoice_date" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="vendor_no" ColumnName="vendor_no" />
+          <ScalarProperty Name="invoice_no" ColumnName="invoice_no" />
+          <ScalarProperty Name="purchase_no" ColumnName="purchase_no" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Purchase_Detail">
+      <EntityTypeMapping TypeName="ProjectDBModel.Purchase_Detail">
+        <MappingFragment StoreEntitySet="Purchase_Detail">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="item_rate" ColumnName="item_rate" />
+          <ScalarProperty Name="qty" ColumnName="qty" />
+          <ScalarProperty Name="item_name" ColumnName="item_name" />
+          <ScalarProperty Name="item_code" ColumnName="item_code" />
+          <ScalarProperty Name="purchase_no" ColumnName="purchase_no" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Login_Master">
+      <EntityTypeMapping TypeName="ProjectDBModel.Login_Master">
+        <MappingFragment StoreEntitySet="Login_Master">
+          <ScalarProperty Name="role_id" ColumnName="role_id" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="login_id" ColumnName="login_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Item_Master">
+      <EntityTypeMapping TypeName="ProjectDBModel.Item_Master">
+        <MappingFragment StoreEntitySet="Item_Master">
+          <ScalarProperty Name="item_rate" ColumnName="item_rate" />
+          <ScalarProperty Name="item_unit" ColumnName="item_unit" />
+          <ScalarProperty Name="item_name" ColumnName="item_name" />
+          <ScalarProperty Name="item_code" ColumnName="item_code" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Inventories">
+      <EntityTypeMapping TypeName="ProjectDBModel.Inventory">
+        <MappingFragment StoreEntitySet="Inventory">
+          <ScalarProperty Name="current_qty" ColumnName="current_qty" />
+          <ScalarProperty Name="min_qty" ColumnName="min_qty" />
+          <ScalarProperty Name="item_code" ColumnName="item_code" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

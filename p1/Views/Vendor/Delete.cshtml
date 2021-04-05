@@ -1,0 +1,67 @@
+﻿@model p1.Models.Vendor_Master
+
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+  
+}
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Vendor_Master</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.vendor_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.vendor_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.vendor_contactno)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.vendor_contactno)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.vendor_address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.vendor_address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.vendor_state)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.vendor_state)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.vendor_GSTno)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.vendor_GSTno)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

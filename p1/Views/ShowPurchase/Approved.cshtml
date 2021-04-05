@@ -1,0 +1,98 @@
+﻿
+@model IEnumerable<p1.Models.Purchase>
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+   
+}
+<link href="~/Content/Custom.css" rel="stylesheet" />
+
+<link href="~/Content/header.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<div class="card card-cyan">
+    <div class="card card-header"><h3 class="card-title">Approved Purchase Order</h3></div>
+    <div class="card-body">
+
+        <table class="table">
+            <tr>
+                <th>
+                    Purchase No
+                </th>
+                <th>
+                    Order Date
+                </th>
+
+                <th>
+                    Vendor
+                </th>
+                <th>
+                    Invoice No
+                </th>
+                <th>Invoice Date</th>
+                <th>
+                    Status
+                </th>
+                <th>
+
+                </th>
+
+            </tr>
+
+            @foreach (var item in Model)
+            {
+
+                if (item.status != "New")
+                {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.purchase_no)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.order_date)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Vendor_Master.vendor_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem=>item.invoice_no)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem=>item.invoice_date)
+            </td>
+            <td>
+                @{
+                    int data = item.id;
+                }
+                <input type="submit" class="btn btn-info id" value="New" id="@data" onclick="getid('@data')" />
+            </td>
+            <td>
+
+            <td>
+                @Html.ActionLink("Detail Of Order", "DetailsPurchase", new { purchase_no = item.purchase_no }, new { @class = "btn btn-info" })
+            </td>
+   
+
+        </tr>
+                }
+            }
+
+        </table>
+    </div>
+    <script>
+        function getid(id) {
+          
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("UpdateStatusNew","ShowPurchase")",
+                data: "{id:"+id+"}",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    location.reload();
+                }
+            });
+        }
+    </script>

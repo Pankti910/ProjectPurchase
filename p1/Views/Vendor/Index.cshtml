@@ -1,0 +1,67 @@
+﻿@model IEnumerable<p1.Models.Vendor_Master>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<link href="~/Content/header.css" rel="stylesheet" />
+
+<div class="card card-cyan">
+    <div class="card card-header"><h3 class="card-title">Vendors</h3></div>
+    <div class="card-body">
+
+        <table class="table customTB">
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Conact No
+                    </th>
+                    <th>
+                        Address
+                    </th>
+                    <th>
+                        State
+                    </th>
+                    <th>
+                        GST No
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.vendor_name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.vendor_contactno)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.vendor_address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.vendor_state)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.vendor_GSTno)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.vendor_code }, new { @class = "btn btn-success" }) 
+                        @Html.ActionLink("Delete", "Delete", new { id = item.vendor_code },new { @class = "btn btn-danger" })
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+        <div>
+            @Html.ActionLink("Add New Vendor", "Create", new { @class = "btn btn-info" })
+        </div>
+        </div>
+    </div>

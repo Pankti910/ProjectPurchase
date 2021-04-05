@@ -1,0 +1,162 @@
+﻿@model p1.Models.Vendor_Master
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Create";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<div class="card card-cyan">
+    <div class="card card-header"><h3 class="card-title">New Vendor</h3></div>
+    <div class="card-body">
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <div class="row">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            Vendor Name
+                            @Html.EditorFor(model => model.vendor_name, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <span class="text-danger" id="vendor_name_error"></span>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            Contact No
+                            @Html.EditorFor(model => model.vendor_contactno, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <span class="text-danger" id="vendor_contactno_error"></span>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <div class="form-group">
+                            GST No
+                            @Html.EditorFor(model => model.vendor_GSTno, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <span class="text-danger" id="vendor_GSTno_error"></span>
+
+                    </div>
+                    <div class="col-md-4">
+
+                        <div class="form-group">
+                            Address
+                            @Html.EditorFor(model => model.vendor_address, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <span class="text-danger" id="vendor_address_error"></span>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <div class="form-group">
+                            State
+                            @Html.DropDownListFor(model => model.vendor_state,
+                        new SelectList(Enum.GetValues(typeof(State))),
+                        "Select State",
+                         htmlAttributes: new { @class = "form-control" }
+                        )
+                        </div>
+                        <span class="text-danger" id="vendor_state_error"></span>
+
+                    </div>
+
+
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="button" id="addVendor" value="Add Vendor" class="btn btn-success" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $("#addVendor").on('click', function () {
+        var flag = 0;
+
+
+        $("#vendor_name_error").html("");
+        $("#vendor_contactno_error").html("");
+        $("#vendorAdd_vendor_GSTno").html("");
+        $("#vendor_address_error").html("");
+        $("#vendor_state_error").html("");
+
+        var name = $("#vendor_name");
+        var no = $("#vendor_contactno");
+        var gstno = $("#vendor_GSTno");
+        var address = $("#vendor_address");
+        var state = $("#vendor_state");
+        if (name.val() == "") {
+            $("#vendor_name_error").html("Name is required");
+            flag = 1;
+        }
+        else {
+            var patt1 = /^[A-Z][a-z]+\s[A-Z][a-z]+$/;
+            if (!patt1.test(name.val())) {
+                $("#vendor_name_error").html("Name should be alphabetic");
+                flag = 1;
+            }
+        }
+        if (no.val() == "") {
+            $("#vendor_contactno_error").html("Number is required");
+            flag = 1;
+        }
+        else {
+            var patt2 = /^([6-9][0-9]{9})+$/;
+            if (!patt2.test(no.val())) {
+                $("#vendor_contactno_error").html("Number must be digit and length of 10 and correct format");
+                flag = 1;
+            }
+        }
+        if (gstno.val() == "") {
+
+            $("#vendor_GSTno_error").html("GST no is required");
+            flag = 1;
+        }
+        else {
+
+            //12ABCDE1234A1Z3
+            patt3 = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+            if (!patt3.test(gstno.val())) {
+                $("#vendor_GSTno_error").html("Check GSTno");
+                flag = 1;
+            }
+
+        }
+        if (address.val() == "") {
+            $("#vendor_address_error").html("Address is required");
+        }
+        if (state.val().length == 0) {
+            $("#vendor_state_error").html("State is required");
+            flag = 1;
+        }
+        if (flag == 0) {
+            $("#addVendor").prop('type', 'submit');
+
+        }
+
+
+
+    });
+</script>

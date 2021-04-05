@@ -1,0 +1,133 @@
+﻿@model p1.ModelView.Detail
+
+
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+   
+}
+<style>
+
+
+
+    label {
+        margin-top: 20px;
+    }
+</style>
+
+<link href="~/Content/Custom.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<link href="~/Content/header.css" rel="stylesheet" />
+<div class="card card-cyan">
+    <div class="card card-header"><h3 class="card-title">@Model.purchase_no Detail</h3></div>
+    <div class="card-body">
+
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.purchase_no)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.purchase_no)
+            </dd>
+            @if (Model.invoice_no != null)
+            {
+            <dt>
+                @Html.DisplayNameFor(model => model.invoice_no)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.invoice_no)
+            </dd>
+
+            }
+             @if (Model.invoice_date != null)
+             {
+            <dt>
+                @Html.DisplayNameFor(model => model.invoice_date)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.invoice_date)
+            </dd>
+             }
+            <dt>
+
+                @Html.DisplayNameFor(model => model.vendor_no)
+
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.vendor_name)
+            </dd>
+
+            <div id="OrderItem">
+                <table table class="table-condensed table" id="OrderTable" style="margin-left:20px;">
+                    <tr>
+                        <th>
+                            Item
+                        </th>
+                        <th>
+                            Rate
+                        </th>
+                        <th>
+                            Qty
+                        </th>
+                        <th>
+                            Amount
+                        </th>
+
+                    </tr>
+                    @foreach (var item in Model.List)
+                    {
+                        <tr>
+                            <td>
+                                @item.item_name
+                            </td>
+                            <td>
+                                @item.item_rate
+                            </td>
+                            <td>
+                                @item.qty
+                            </td>
+                            <td>
+                                @item.amount
+                            </td>
+
+                        </tr>
+                    }
+                    <tr>
+                        <td>
+                            <b>
+                                Total
+                            </b>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            <b>
+                                @Model.List.Sum(x => x.amount)
+                            </b>
+                        </td>
+
+                    </tr>
+                </table>
+
+            </div>
+        </dl>
+
+
+
+        <div class="form-actions no-color">
+            @Html.ActionLink("Cancel Order", "Delete", new { purchase_no = Model.purchase_no }, new { @class = "btn btn-danger" })
+
+
+
+            |
+            <input type="button" class="btn btn-info" value="Back" onclick="location.href='@Url.Action("Index","ShowPurchase")'" />
+        </div>
+
+    </div>

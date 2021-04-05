@@ -1,0 +1,94 @@
+﻿@model IEnumerable<p1.Repositories.InventoryRepo>
+<div class="card card-cyan">
+    <div class="card card-header"><h3 class="card-title">Items</h3></div>
+    <div class="card-body">
+
+        <table class="table">
+            <tr>
+                <th></th>
+                <th>Item</th>
+                <th>Rate</th>
+                <th>Unit</th>
+                <th>Min Qty</th>
+                <th>Current Qty</th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+
+                if (item.inventory.current_qty < item.inventory.min_qty)
+                {
+                    <tr style="background-color:aquamarine;">
+
+                        <td>
+
+                            @Html.ActionLink("+", "Increase", new { item_code = item.item.item_code }, new { @class = "btn btn-outline-success" })
+                            @Html.ActionLink("-", "Decrease", new { item_code = item.item.item_code }, new { @class = "btn btn-outline-danger" })
+
+                        </td>
+                        <td>
+                            @item.item.item_name
+                        </td>
+                        <td>
+                            @item.item.item_rate
+                        </td>
+                        <td>
+                            @item.item.item_unit
+                        </td>
+                        <td>
+                            @item.inventory.min_qty
+                        </td>
+                        <td>
+                            @item.inventory.current_qty
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { item_code = item.item.item_code }, new { @class = "btn btn-success" })
+
+                            @Html.ActionLink("Delete", "Delete", new { item_code = item.item.item_code }, new { @class = "btn btn-danger" })
+
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+
+                        <td>
+
+                            @Html.ActionLink("+", "Increase", new { item_code = item.item.item_code }, new { @class = "btn btn-outline-success" })
+                            @Html.ActionLink("-", "Decrease", new { item_code = item.item.item_code }, new { @class = "btn btn-outline-danger" })
+
+                        </td>
+                        <td>
+                            @item.item.item_name
+                        </td>
+                        <td>
+                            @item.item.item_rate
+                        </td>
+                        <td>
+                            @item.item.item_unit
+                        </td>
+                        <td>
+                            @item.inventory.min_qty
+                        </td>
+                        <td>
+                            @item.inventory.current_qty
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { item_code = item.item.item_code }, new { @class = "btn btn-success" })
+
+                            @Html.ActionLink("Delete", "Delete", new { item_code = item.item.item_code }, new { @class = "btn btn-danger" })
+
+                        </td>
+                    </tr>
+                }
+            }
+
+        </table>
+
+        <p>
+            @Html.ActionLink("Add New Item", "Create", new { @class = "btn btn-info" })
+        </p>
+</div>
+</div>
